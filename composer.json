@@ -1,7 +1,7 @@
 {
   "name": "medlib/yaz",
   "description": "Medlib is a searche Library",
-  "keywords": ["application", "yaz", "finder books", "Bibliotheque", "search books", "library"],
+  "keywords": ["z3950", "yaz", "finder books", "Bibliotheque", "search books", "library"],
   "license": "MIT",
   "homepage": "https://www.medlib.fr",
   "Helpers": {
@@ -22,8 +22,10 @@
     "medlib/yaz": "self.version"
 
   },
+  "autoload": {
     "psr-4": {
       "Yaz\\" : ""
+    }
   },
   "minimum-stability": "dev"
 }
