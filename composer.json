@@ -1,0 +1,30 @@
+{
+  "name": "medlib/yaz",
+  "description": "Medlib is a searche Library",
+  "keywords": ["application", "yaz", "finder books", "Bibliotheque", "search books", "library"],
+  "license": "MIT",
+  "homepage": "https://www.medlib.fr",
+  "Helpers": {
+    "issues": "https://github.com//medlib-v2/yaz/issues",
+    "source": "https://github.com//medlib-v2/yaz"
+  },
+  "authors": [
+    {
+      "name": "Medlib Team",
+      "email": "noreply-medlib@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9"
+
+  },
+  "replace": {
+    "medlib/yaz": "self.version"
+
+  },
+    "psr-4": {
+      "Yaz\\": ""
+    }
+  },
+  "minimum-stability": "dev"
+}
