@@ -23,8 +23,7 @@
 
   },
     "psr-4": {
-      "Yaz\\": ""
-    }
+      "Yaz\\" : ""
   },
   "minimum-stability": "dev"
 }
