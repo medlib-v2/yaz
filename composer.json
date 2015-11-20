@@ -3,7 +3,8 @@
   "description": "Medlib is a searche Library",
   "keywords": ["z3950", "yaz", "finder books", "Bibliotheque", "search books", "library"],
   "license": "MIT",
-  "homepage": "https://www.medlib.fr",
+  "type": "library",
+  "homepage": "http://www.medlib.fr",
   "Helpers": {
     "issues": "https://github.com//medlib-v2/yaz/issues",
     "source": "https://github.com//medlib-v2/yaz"
