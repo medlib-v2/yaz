@@ -10,19 +10,20 @@ class SimpleQuery {
     private $_query = [];
     private $_StringQuery;
 
-    public function __construct( array $query) {
+    public function __construct(array $query) {
 
         $this->_query = $query;
     }
 
-    /*
-    * Cette fonction analyser la requête utilisateur
-    * @return string query
-    */
+    /**
+     *
+     * Cette fonction analyser la requête utilisateur
+     * @return string query
+     */
     public function get() {
 
-        if(!empty($this->_query) and is_array($this->_query))
-        {
+        if(!empty($this->_query) and is_array($this->_query)) {
+
             // Titres
             if(isset($this->_query['title'])) {
 
@@ -80,7 +81,6 @@ class SimpleQuery {
             }
 
             // Date de publication
-
             if( isset($this->_query['dofpublisher']) and (
                     isset($this->_query['keywords']) or
                     isset($this->_query['uniforme']) or
@@ -101,19 +101,21 @@ class SimpleQuery {
                     $this->_StringQuery = $this->_query['dofpublisher'] .'='. '"'.$this->_query['query'].'"';
                 }
             }
-            /*
-            * @return a string query parsered
-            */
+
+            /**
+             *
+             * @return string query
+             */
             return $this->_StringQuery;
         }
     }
 
-    private static function is_date($str)
-    {
+    private static function is_date($str) {
+
         $str = str_replace('/', '-', $str);
         $stamp = strtotime($str);
 
-        if (is_numeric($stamp)){
+        if (is_numeric($stamp)) {
 
             $month = date( 'm', $stamp );
             $day   = date( 'd', $stamp );
@@ -129,4 +131,5 @@ class SimpleQuery {
         $date = DateTime::createFromFormat($str_dateformat, $str_dt, new DateTimeZone($str_timezone));
         return $date && $date->format($str_dateformat) == $str_dt;
     }
+
 }

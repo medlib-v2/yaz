@@ -1,56 +1,72 @@
 <?php
 
+/*
+ * This file is part of the medlib application.
+ * (c) 2015 Patrick LUZOLO <luzolo_p@medlib.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * YazConnexion
+ *
+ * Provides connectivity for Z3950.
+ *
+ * @application    medlib
+ * @author     Patrick LUZOLO <luzolo_p@medlib.fr>
+ *
+ */
+
 namespace Yaz\Connexion;
 
-use Yaz\Exceptions\YazNotLoadedException;
-use Yaz\Interfaces\YazConnexionInterface;
+use Yaz\Exception\YazNotLoadedException;
 
-class YazConnexion  implements YazConnexionInterface {
+class YazConnexion {
 
-    /**
-     * @var \Yaz\Connexion\ConnexionManager $connection
-     */
-    private $connection;
+	/**
+	 * @var \Yaz\Connexion\ConnexionManager $connection
+	 */
+	private $connection;
 
-    /**
-     * @var self $instance
-     */
-    private static $instance;
+	/**
+	 * @var self $instance
+	 */
+	private static $instance;
 
-
-    public static function factory()
-    {
+	public function __construct($from) {
         self::init();
+		static::$instance = new ConnexionManager($from);
+	}
 
-        if(!isset(static::$instance)) static::$instance = new self;
+	/**
+	 * Execute the shutdown yaz connexion..
+	 *x
+	 * @return yaz_resource
+	 */
+	public function connect() {
 
-        return static::$instance;
-    }
-
-    /**
-     * Execute the shutdown yaz connexion..
-     *
-     * @param $from
-     * @return \Yaz\Connexion\ConnexionManager
-     */
-    public function connect($from)
-    {
-        if(!isset($this->connection)) $this->connection = (new ConnexionManager($from))->getInstance();
-
+        $this->connection = static::$instance->getInstance();
         return $this->connection;
-    }
+	}
 
-    /**
-     * Execute the shutdown yaz connexion..
-     *
-     * @return void
-     */
-    public function close()
-    {
-        if ($this->connection !== null)
-        {
-            yaz_close($this->connection);
-            $this->connection = null;
+	/**
+	public function options() {
+		return $this->instance->getIndexes();
+	}
+	 */
+
+	/**
+	* Execute the shutdown yaz connexion.
+	*
+	* @return void
+	*/
+	public function close()
+	{
+		if ($this->connection !== null)
+		{
+			yaz_close($this->connection);
+			$this->connection = null;
         }
     }
 
@@ -58,7 +74,8 @@ class YazConnexion  implements YazConnexionInterface {
     {
         if(!function_exists('yaz_connect'))
         {
-            throw new YazNotLoadedException('FEEDBACK_YAZ_WAS_NOT_LOADED');
+            throw new YazNotLoadedException("Yaz module is not installed");
         }
     }
-}
+
+ }

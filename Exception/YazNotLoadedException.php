@@ -1,10 +1,8 @@
 <?php
 
-namespace Yaz\Exceptions;
+namespace Yaz\Exception;
 
 use Exception;
 
-
 class YazNotLoadedException extends Exception {
-
 }

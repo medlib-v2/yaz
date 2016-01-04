@@ -1,84 +1,95 @@
 <?php
 
+/*
+ * This file is part of the medlib application.
+ * (c) 2015 Patrick LUZOLO <luzolo_p@medlib.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * ConnexionManager
+ *
+ * Provides connectivity for Z3950.
+ *
+ * @application    medlib
+ * @author     Patrick LUZOLO <luzolo_p@medlib.fr>
+ *
+ */
+
 namespace Yaz\Connexion;
 
 use Exception;
 use Illuminate\Support\Facades\Config;
-use Yaz\Exceptions\ConnexionManagerException;
+use Yaz\Exception\ConnexionManagerException;
 
-class ConnexionManager {
+class ConnexionManager
+{
 
-    private
-        $_server,
-        $_port,
-        $_database,
-        $_url,
-        $_instance;
+	private
+		$_server,
+		$_port,
+		$_database,
+		$_config,
+		$_url,
+		$_instance;
 
-    public function __construct($from) {
+	public function __construct($from) {
 
-        $config = Config::get('yaz.zebra');
+		$this->_config = Config::get('yaz.zebra');
 
-        if(isset($config[$from])) {
+		if(!isset($this->_config[$from])) {
+			throw new Exception('Invalid parameter given to ConnexionManager->__construct. Expected source yaz.', 1);
+		}
 
-            $this->_server = $config[$from]['database']['hostname'];
+		$this->_server = $this->_config[$from]['database']['hostname'];
+		$this->_port = $this->_config[$from]['database']['port'];
 
-            $this->_port = $config[$from]['database']['port'];
+        if(is_array($this->_config[$from]['database']['name'])) { $this->_database = $this->_config[$from]['database']['name'][0]; }
+		else { $this->_database = $this->_config[$from]['database']['name']; }
 
-            if(isset($config[$from]['database']['name'][0]))
-            {
-                $this->_database = $config[$from]['database']['name'][0];
-            }
-            else {
-                $this->_database = $config[$from]['database']['name'];
-            }
-            $this->_url = $this->_server . ':'. $this->_port .'/'. $this->_database;
+        $this->_url = $this->_server . ':'. $this->_port .'/'. $this->_database;
 
-            if(isset($config[$from]['options'])) {
+		if(isset($this->_config[$from]['options']) && is_array($this->_config[$from]['options'])) {
 
-                $this->_instance = $this->Connection(
-                    $this->_url, $config[$from]['options'],
-                    isset($config[$from]['database']['elementset']) ? $config[$from]['database']['elementset'] : null
-                );
-            }
-            else {
+			$this->_instance = $this->Connection(
+				$this->_url,
+				$this->_config[$from]['options'],
+				isset($this->_config[$from]['database']['elementset']) ? $this->_config[$from]['database']['elementset'] : null
+			);
 
-                $this->_instance = $this->Connection(
-                    $this->_url, null,
-                    isset($config[$from]['database']['elementset']) ? $config[$from]['database']['elementset'] : null
-                );
-            }
-        } else {
-            throw new Exception('Invalid parameter given to ConnexionManager->__construct. Expected source yaz.', 1);
-        }
-    }
+		} else {
 
-    private function Connection($dsn, $options = null, $elementset = null)
-    {
-        try{
-            if (isset($options) && is_array($options))
-            {
-                $connexion = yaz_connect($dsn, $options);
-            }
-            else {
-                $connexion = yaz_connect($dsn);
-            }
+			$this->_instance = $this->Connection(
+				$this->_url,
+				null,
+				isset($this->_config[$from]['database']['elementset']) ? $this->_config[$from]['database']['elementset'] : null
+			);
+		}
+	}
 
-            $this->elementset($connexion, $elementset);
-        }
-        catch (ConnexionManagerException $e) {
-            throw new ConnexionManagerException($e->toString()); }
+	private function Connection($dsn, $options = null, $elementset = null) {
 
-        return $connexion;
-    }
+		try {
+			if (isset($options) && is_array($options)) {
+				$connection = yaz_connect($dsn, $options);
+			} else {
+				$connection = yaz_connect($dsn);
+			}
 
-    public function getInstance()
-    {
-        return $this->_instance;
-    }
+			if(isset($elementset)) {
+				yaz_element($connection, $elementset);
+			}
+		}
+		catch (ConnexionManagerException $e) {
+			throw new ConnexionManagerException($e->toString()); }
 
-    private function elementset($connexion, $elementset)
-    {
-        if(isset($elementset))  yaz_element($connexion, $elementset);
-    }
+		return $connection;
+	}
+
+	public function getInstance() {
+
+		return $this->_instance;
+	}
 }

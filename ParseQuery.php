@@ -8,7 +8,6 @@ use Yaz\ParseQuery\AdvancedQuery;
 
 class ParseQuery {
 
-
     public function __construct() {
 
     }
@@ -18,8 +17,9 @@ class ParseQuery {
         return new SimpleQuery($request->all());
     }
 
-    public function advanced(Request $request)
-    {
+    public function advanced(Request $request) {
+
         return new AdvancedQuery($request->all());
     }
+
 }
