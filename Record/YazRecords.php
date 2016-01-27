@@ -77,7 +77,12 @@ class YazRecords {
 			$type = $RecordMode;
 		}
 
-		return yaz_record($conn, $position, $type);
+		try {
+			return yaz_record($conn, $position, $type);
+		} catch(\QueryException $e){
+
+			return yaz_record($conn, $position + 1, $type);
+		}
 	}
 
 	/**
