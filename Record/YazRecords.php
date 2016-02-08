@@ -19,6 +19,7 @@
 namespace Yaz\Record;
 
 use Yaz\Exception\QueryNotAllowException;
+use Yaz\Exception\QueryException;
 
 class YazRecords {
 
@@ -79,7 +80,7 @@ class YazRecords {
 
 		try {
 			return yaz_record($conn, $position, $type);
-		} catch(\QueryException $e){
+		} catch(QueryException $e){
 
 			return yaz_record($conn, $position + 1, $type);
 		}
