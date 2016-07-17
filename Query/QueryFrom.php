@@ -38,7 +38,7 @@ class QueryFrom extends YazFactory
         $this->_conn = (new YazConnexion($this->from))->connect();
 
         $indexes = Config::get('yaz.indexes');
-
+        
         $this->_parts['options'] = $indexes['indexes'];
 
         parent::__construct($this->_conn, $from, $this->_parts);

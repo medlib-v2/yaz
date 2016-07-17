@@ -45,7 +45,6 @@ class YazConnexion {
 	 * @return yaz_resource
 	 */
 	public function connect() {
-
         $this->connection = static::$instance->getInstance();
         return $this->connection;
 	}
@@ -59,21 +58,23 @@ class YazConnexion {
 	/**
 	* Execute the shutdown yaz connexion.
 	*
-	* @return void
+	* @return null
 	*/
 	public function close()
 	{
-		if ($this->connection !== null)
-		{
+		if ($this->connection !== null)  {
+
 			yaz_close($this->connection);
 			$this->connection = null;
+
+			return $this->connection;
         }
     }
 
     private static function init()
     {
-        if(!function_exists('yaz_connect'))
-        {
+        if(!function_exists('yaz_connect'))  {
+			
             throw new YazNotLoadedException("Yaz module is not installed");
         }
     }

@@ -139,10 +139,7 @@ class YazRecords {
 	 */
 	public function fails() {
 
-		if($this->hasError() > 0)
-		{
-			return true;
-		}
+		if($this->hasError() > 0) { return true; }
 		return false;
 	}
 
@@ -187,4 +184,17 @@ class YazRecords {
 	 * @return int
 	 */
 	public function hasError(){ return $this->_parts['error_no']; }
+
+	/**
+	 * Close this resource of Yaz and return null
+	 * @return null
+	 */
+	public function close() {
+
+		if ($this->_conn != null) {
+			yaz_close($this->_conn);
+			$this->_conn = null;
+		}
+		return $this->_conn;
+	}
 }

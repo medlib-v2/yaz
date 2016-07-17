@@ -24,8 +24,7 @@ use Exception;
 use Illuminate\Support\Facades\Config;
 use Yaz\Exception\ConnexionManagerException;
 
-class ConnexionManager
-{
+class ConnexionManager {
 
 	private
 		$_server,
@@ -35,10 +34,15 @@ class ConnexionManager
 		$_url,
 		$_instance;
 
+	/**
+	 * ConnexionManager constructor.
+	 * @param $from
+	 * @return void
+	 */
 	public function __construct($from) {
 
 		$this->_config = Config::get('yaz.zebra');
-
+		
 		if(!isset($this->_config[$from])) {
 			throw new Exception('Invalid parameter given to ConnexionManager->__construct. Expected source yaz.', 1);
 		}
@@ -60,7 +64,6 @@ class ConnexionManager
 			);
 
 		} else {
-
 			$this->_instance = $this->Connection(
 				$this->_url,
 				null,
@@ -69,6 +72,13 @@ class ConnexionManager
 		}
 	}
 
+	/**
+	 * @param $dsn
+	 * @param null $options
+	 * @param null $elementset
+	 * @return resource $connection
+	 * @throws ConnexionManagerException
+	 */
 	private function Connection($dsn, $options = null, $elementset = null) {
 
 		try {
@@ -88,6 +98,9 @@ class ConnexionManager
 		return $connection;
 	}
 
+	/**
+	 * @return resource yaz_connect
+	 */
 	public function getInstance() {
 
 		return $this->_instance;

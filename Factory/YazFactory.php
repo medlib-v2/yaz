@@ -20,6 +20,7 @@
 
 namespace Yaz\Factory;
 
+use Medlib\YAZ\Query\QueryClose;
 use Yaz\Query\QueryFrom;
 use Yaz\Query\QueryWhere;
 use Yaz\Query\QueryLimit;
@@ -27,8 +28,8 @@ use Yaz\Query\QueryOrderBy;
 use Yaz\Record\YazRecords;
 use Yaz\Exception\QueryNotAllowException;
 
-abstract class YazFactory
-{
+abstract class YazFactory {
+
 	protected $_conn, $_parts;
 
 	public function __construct(
@@ -80,7 +81,9 @@ abstract class YazFactory
 
 	public function limit($start, $end) {
 
-		/* La position du tableau commence à 1 */
+		/**
+		 * La position du tableau commence à 1
+		 */
 		$this->_parts['limit'] = array('start' => $start + 1, 'end' => $end);
 		return new QueryLimit($this->_conn, $this->_parts);
 	}
@@ -120,6 +123,12 @@ abstract class YazFactory
 		return $indexes;
 	}
 
+	/**
+	 * @param $conn
+	 * @param $where
+	 * @return string
+	 * @throws QueryNotAllowException
+     */
 	private function whereParse($conn, $where) {
 
 		if(yaz_ccl_parse($conn, $where, $result)) {
@@ -133,8 +142,5 @@ abstract class YazFactory
 
 	public function getBaseRequest() {
 		return $this->_parts;
-	}
-
-	public function close() {
 	}
 }
