@@ -136,7 +136,7 @@ abstract class YazFactory {
 			return trim($result["rpn"]);
 		}
         else {
-	        throw new QueryNotAllowException(sprintf('FEEDBACK_YAZ_PARSING_ERROR %s',$result['errorstring']));
+	        throw new QueryNotAllowException(sprintf('Parsing error: %s',$result['errorstring']));
         }
 	}
 
