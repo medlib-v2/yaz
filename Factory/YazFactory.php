@@ -20,7 +20,6 @@
 
 namespace Yaz\Factory;
 
-use Medlib\YAZ\Query\QueryClose;
 use Yaz\Query\QueryFrom;
 use Yaz\Query\QueryWhere;
 use Yaz\Query\QueryLimit;
