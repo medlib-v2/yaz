@@ -49,7 +49,16 @@ class AdvancedQuery {
                 elseif (isset($from)) $this->_AdvancedQuery .= ' and pub="'. $place.'"';
             }
 
-            if(isset($language)) $this->_AdvancedQuery .= ' and ln="'. $language.'"';
+            if(isset($language)) {
+
+                if (isset($from) and $from == 'SUDOC') {
+
+                    if($language !== 'ALL') $this->_AdvancedQuery .= ' and ln="'. $language.'"';
+
+                } else {
+                    $this->_AdvancedQuery .= ' and ln="'. $language.'"';
+                }
+            }
 
             if(isset($datePub) and isset($datePub['yearOption']) and $datePub['yearOption'] == 'predefined') {
 
