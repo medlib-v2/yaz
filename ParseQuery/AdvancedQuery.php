@@ -47,11 +47,11 @@ class AdvancedQuery {
 
             if(isset($language)) $this->_AdvancedQuery .= ' and ln="'. $language.'"';
 
-            if(isset($datePub) and $datePub['yearOption'] == 'predefined') {
+            if(isset($datePub) and isset($datePub['yearOption']) and $datePub['yearOption'] == 'predefined') {
 
                 $this->_AdvancedQuery .= ' and yr="'. $datePub['year'].'"';
 
-            } elseif (isset($datePub) and $datePub['yearOption'] == 'range') {
+            } elseif (isset($datePub) and isset($datePub['yearOption']) and $datePub['yearOption'] == 'range') {
                 $date = $datePub['fromYear'].'-'.$datePub['toYear'];
                 $this->_AdvancedQuery .= ' and yr="'. $date.'"';
 
