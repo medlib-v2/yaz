@@ -29,6 +29,7 @@ class AdvancedQuery {
         if(!empty($this->_query) and is_array($this->_query)) {
 
             $words = $this->_query['words'];
+            $from = isset($this->_query['qdb']) ? $this->_query['qdb']: null;
             $place = isset($this->_query['place']) ? $this->_query['place']: null;
             $language = isset($this->_query['language']) ? $this->_query['language'] : null;
             $datePub = isset($this->_query['datePub']) ? $this->_query['datePub'] : null;
@@ -43,7 +44,10 @@ class AdvancedQuery {
                 }
             }
 
-            if(isset($place)) $this->_AdvancedQuery .= ' and pub="'. $place.'"';
+            if(isset($place)) {
+                if (isset($from) and $from == 'SUDOC') $this->_AdvancedQuery .= ' and cna="'. $place.'"';
+                elseif (isset($from)) $this->_AdvancedQuery .= ' and pub="'. $place.'"';
+            }
 
             if(isset($language)) $this->_AdvancedQuery .= ' and ln="'. $language.'"';
 
