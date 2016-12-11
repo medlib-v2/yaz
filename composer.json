@@ -1,7 +1,7 @@
 {
   "name": "medlib/yaz",
   "description": "Medlib is a searche Library",
-  "keywords": ["z3950", "yaz", "finder books", "Bibliotheque", "search books", "library"],
+  "keywords": ["z3950", "yaz", "finder books", "Bibliotheque", "Search books", "Library"],
   "license": "MIT",
   "type": "library",
   "homepage": "https://www.medlib.fr",

@@ -41,7 +41,7 @@ class ConnexionManager {
 	 */
 	public function __construct($from) {
 
-		$this->_config = Config::get('yaz.zebra');
+		$this->_config = config('yaz.zebra');
 		
 		if(!isset($this->_config[$from])) {
 			throw new Exception('Invalid parameter given to ConnexionManager->__construct. Expected source yaz.', 1);

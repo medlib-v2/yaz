@@ -78,34 +78,58 @@ abstract class YazFactory {
 		return new QueryOrderBy($this->_conn, $order, $this->_parts);
 	}
 
+	/**
+	 * Limit the query offset
+	 * @param $start
+	 * @param $end
+	 * @return QueryLimit
+	 */
 	public function limit($start, $end) {
 
 		/**
 		 * La position du tableau commence à 1
 		 */
-		$this->_parts['limit'] = array('start' => $start + 1, 'end' => $end);
+		$this->_parts['limit'] = ['start' => $start + 1, 'end' => $end];
 		return new QueryLimit($this->_conn, $this->_parts);
 	}
 
+	/**
+	 * Return all result
+	 * @param null $RecordsMode
+	 * @param string $syntaxMode
+	 * @return YazRecords
+	 */
 	public function all($RecordsMode = null, $syntaxMode = 'marc21') {
 
 		$this->_parts['syntax'] = $syntaxMode;
 		$this->_parts = $this->find($this->_conn, $this->_parts);
 		$RecordsType = isset($this->_parts['limit']) ?
-			array('type' => 'limit',
+			['type' => 'limit',
                   'start' => $this->_parts['limit']['start'],
-                  'end' => $this->_parts['limit']['end']):
-            array('type' => 'all');
+                  'end' => $this->_parts['limit']['end']]:
+            ['type' => 'all'];
         return new YazRecords($this->_conn, $this->_parts, $RecordsMode, $RecordsType);
 	}
 
+	/**
+	 * Return the first result
+	 * @param null $RecordsMode
+	 * @param string $syntaxMode
+	 * @return YazRecords
+	 */
 	public function first($RecordsMode = null, $syntaxMode = 'marc21') {
 		$this->_parts['syntax'] = $syntaxMode;
 		$this->_parts = $this->find($this->_conn, $this->_parts);
-		return new YazRecords($this->_conn, $this->_parts, $RecordsMode, array('type' =>'one'));
+		return new YazRecords($this->_conn, $this->_parts, $RecordsMode, ['type' =>'one']);
 
 	}
 
+	/**
+	 * Send request to yaz resource
+	 * @param $conn
+	 * @param $parts
+	 * @return mixed
+	 */
 	private function find($conn, $parts) {
 
 		yaz_syntax($conn, $parts['syntax']);
@@ -117,6 +141,12 @@ abstract class YazFactory {
 		return $parts;
 	}
 
+	/**
+	 * Parsing the indexes setting
+	 * @param $conn
+	 * @param $indexes
+	 * @return mixed
+	 */
 	private function parseConfiguration($conn, $indexes) {
 		yaz_ccl_conf($conn, $indexes);
 		return $indexes;
@@ -139,6 +169,10 @@ abstract class YazFactory {
         }
 	}
 
+	/**
+	 * Return the user query
+	 * @return array
+	 */
 	public function getBaseRequest() {
 		return $this->_parts;
 	}

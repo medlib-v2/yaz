@@ -68,22 +68,27 @@ class YazRecords {
 	 * @param $conn
 	 * @param $position
 	 * @param $RecordMode
-	 * @return xml
+	 * @return $type xml
 	 */
 	public static function getByPosition($conn, $position, $RecordMode) {
 
 		if($RecordMode == "xml") {
-			$type = "xml; charset=utf-8";
+			//$type = "xml";
+			$type = "xml; charset=marc-8,utf-8";
 		} else {
 			$type = $RecordMode;
 		}
 
 		try {
-			return yaz_record($conn, $position, $type);
+			$xmlContent = yaz_record($conn, $position, $type);
 		} catch(QueryException $e){
 
-			return yaz_record($conn, $position + 1, $type);
+			ddd($e);
+
+			$xmlContent = yaz_record($conn, $position + 1, $type);
 		}
+
+		return $xmlContent;
 	}
 
 	/**
