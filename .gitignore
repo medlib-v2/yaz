@@ -1,0 +1,6 @@
+.DS_Store
+/vendor
+composer.lock
+build
+coverage.xml
+!.gitignore
