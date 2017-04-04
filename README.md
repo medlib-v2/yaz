@@ -19,14 +19,14 @@ The next required step is to add the service provider to config/app.php :
 ]
 ```
 
-````php
+```php
 'aliases' => [
     ...
     'Yaz' => Medlib\Yaz\Facades\Yaz::class,
     'Query' => Medlib\Yaz\Facades\Query::class,
     'MarcXML' => Medlib\MarcXML\Facades\MarcXML::class,
 ]
-``
+```
 
 ### Publish ###
 
