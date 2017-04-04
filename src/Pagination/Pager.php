@@ -42,7 +42,7 @@ abstract class Pager implements Iterator, Countable
     *
     * Function to be called after parameters have been set.
     */
-    abstract public function init();
+    abstract public function render();
 
     /**
      * Returns an array of results on the given page.

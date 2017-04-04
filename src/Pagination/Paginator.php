@@ -50,7 +50,7 @@ class Paginator extends Pager
      * @param string $fetchMode
      * Function to be called after parameters have been set.
      */
-    public function init($fetchMode = YazRecords::TYPE_XML)
+    public function render($fetchMode = YazRecords::TYPE_XML)
     {
         $this->fetchMode = $fetchMode;
         $count = $this->getQuery()->all($this->fetchMode)->getHits();

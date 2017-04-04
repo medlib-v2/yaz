@@ -46,6 +46,106 @@ Then run this command :
     php artisan config:clear
 ```
 
+### Examples ###
+  * Request with a return type of `BibliographicRecord` (all records):
+  
+        use Medlib\Yaz\Query\YazQuery;
+        
+        $this->results = YazQuery::create()
+        ->from('SUDOC')
+        ->where('au="totok" and ti="Handbuch"')
+        ->orderBy('au ASC')
+        ->all();
+  
+  
+  * Request with a return type of `BibliographicRecord` (one record):
+  
+        use Medlib\Yaz\Query\YazQuery;
+        
+        $this->results = YazQuery::create()
+        ->from('SUDOC')
+        ->where('au="totok" and ti="Handbuch"')
+        ->first();
+  * Request with a return type of `BibliographicRecord` (limit):
+  
+        use Medlib\Yaz\Query\YazQuery;
+        
+        $this->results = YazQuery::create()
+        ->from('BNF')
+        ->where('au="totok" and ti="Handbuch"')
+        ->limit(0,10)
+        ->all();
+  
+  * Request with a return type of `string` (all records):
+  
+        use Medlib\Yaz\Query\YazQuery;
+        use Medlib\Yaz\Record\YazRecords;
+        
+        $this->results = YazQuery::create()
+        ->from('BNF')
+        ->where('au="totok" and ti="Handbuch"')
+        ->orderBy('au ASC')
+        ->all(YazRecords::TYPE_STRING);
+
+  * Request with a return type of `xml` equal to `BibliographicRecord` (all records):
+
+        use Medlib\Yaz\Query\YazQuery;
+        use Medlib\Yaz\Record\YazRecords;
+        
+        $this->results = YazQuery::create()
+        ->from('connection_name')
+        ->where('au="totok" and ti="Handbuch"')
+        ->orderBy('au ASC')
+        ->all(YazRecords::TYPE_XML);
+
+#### Allowed parameters
+
+ ##### Type:
+    - TYPE_STRING
+    - TYPE_RAW
+    - TYPE_XML 
+    - TYPE_SYNTAX 
+    - TYPE_ARRAY
+
+Order           | Description 
+--------------- | -------------
+ASC             | Sort ascending
+IASC            | Sort ascending, Case insensitive sorting
+SASC            | Sort ascending, Case sensitive sorting
+DESC            | Sort descending
+IDESC           | Sort descending, Case insensitive sorting
+SDESC           | Sort descending, Case sensitive sorting
+
+### Pagination ###
+
+
+  * Action:
+  
+        use Medlib\Yaz\Pagination\Paginator;
+        use Medlib\Yaz\Record\YazRecords;
+        
+        $pagination = new Paginator('BNF', 10);
+
+        $pagination->getQuery()
+        ->where('au="totok"')
+        ->orderBy('ti ASC');
+
+        $pagination->setPage($request->get('page', 1));
+
+        $pagination->render();
+
+
+  * Template:
+  
+          Count: echo $pagination->getNbResults();
+          foreach($pagination->getResults(YazRecords::TYPE_STRING) AS $result):
+                echo $result;
+          endforeach;
+
+### Required ###
+
+- [YAZ Client 4|5](http://www.indexdata.dk/yaz/)
+- [PHP YAZ](http://pecl.php.net/package/yaz)
 
 Congratulations, you have successfully installed Yaz Query Builder !
 
