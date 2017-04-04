@@ -12,8 +12,21 @@ You can install this package by using [Composer](http://getcomposer.org), runnin
 
 The next required step is to add the service provider to config/app.php :
 ```php
-    Medlib\Yaz\Providers\YazServiceProvider::class
+'providers' => [
+    ...
+    Medlib\Yaz\Providers\YazServiceProvider::class,
+    Medlib\MarcXML\Providers\ParserServiceProvider::class,
+]
 ```
+
+````php
+'aliases' => [
+    ...
+    'Yaz' => Medlib\Yaz\Facades\Yaz::class,
+    'Query' => Medlib\Yaz\Facades\Query::class,
+    'MarcXML' => Medlib\MarcXML\Facades\MarcXML::class,
+]
+``
 
 ### Publish ###
 
