@@ -17,7 +17,7 @@
   ],
   "require": {
     "php": ">=5.5.9",
-    "medlib/marcxml": "^1.3.*"
+    "medlib/marcxml": "~1.3"
 
   },
   "require-dev": {
